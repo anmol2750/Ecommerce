@@ -1,0 +1,100 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load bootstrap4 %}
+{% load i18n %}
+
+<!-- Title -->
+{% block title %} {% trans CATEGORY %} {% endblock %}
+
+<!-- begin : Content -->
+{% block content %}
+<section class="content">
+    <div class="container"> 
+        <div class = "row bg-dark mb-2">
+
+            <!-- Total count of Category -->
+            <div class = "d-flex justify-content col-sm-4 ml-4">
+                <h3 class = "btn btn-secondary mt-2">{% trans TOTAL_VENDOR %}<h3> 
+            </div>
+
+             <!-- Category Heading at Top -->
+            <div class = "d-flex justify-content-center col mt-2">
+                <h2 class = "text-white"> {% trans CATEGORY %} </h2>
+            </div>
+
+            <div class = "d-flex justify-content-left col ml-6">
+                <!-- Active count of Category -->
+                <div class = "d-flex ml-5">
+                    <h3 class = "btn btn-secondary mt-2">{% trans ACTIVE %}<h3> 
+                </div>
+
+                <!-- Inactive count of Category -->
+                <div class = "d-flex ml-5">
+                    <h3 class = "btn btn-secondary mt-2">{% trans INACTIVE %}<h3> 
+                </div>
+            </div>
+        </div>
+
+        <div class = "row mb-3">
+            <div class = "d-flex justify-content-left col">
+
+                <!-- Add Category Button at Top -->
+                <a href = "{% url 'category:category_add' %}" class = "btn btn-outline-primary my-2 my-sm-0"> {% trans ADD_CATEGORY %} </a> 
+
+                <!-- Reset Button at Top -->
+                <a href = "{% url 'category:category_list' %}" class = "btn btn-outline-primary my-2 my-sm-0 ml-4"> {% trans RESET %} </a>
+            </div>
+
+            <div class = "d-flex justify-content-right col">
+
+                <!-- Date Filter at Top -->
+                <div class = "d-flex justify-content mr-2">
+                    {% include "main/date_filter.html" %}
+                </div>
+
+                <!-- Search Bar at Top -->
+                <div class = "d-flex justify-content ml-5">
+                    {% include "main/search.html" %}
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <table class = "table table-sm table-bordered table-hover">
+
+                <!-- Table Headers -->
+                <thead class = "alert-warning">
+                    <tr>
+                        <th scope = "col"><center> {% trans  ID %} </th>
+                        <th scope = "col"><center> {% trans DATE_JOINED %} </th>    
+                        <th scope = "col"><center> {% trans CATEGORY_NAME %} </th>
+                        <th scope = "col"><center> {% trans ACTION %} </th>
+                    </tr>
+                </thead>
+                
+                <!-- Table Data -->
+                <tbody>
+                {% for category in category  %}
+                <tr>
+                    <td><center>{{category.id}}</td>
+                    <td><center>{{category.created_at.date}}    
+                    <td><center>{{category.name}}</td>
+                    <td>
+                        <center>
+                            <a class = "btn btn-outline-primary btn-sm" href = "{% url 'category:category_update' category.id %}">
+                                <span class = "glyphicon glyphicon-edit"></span> {% trans UPDATE %} 
+                            </a> 
+                            <a class = "btn btn-outline-primary btn-sm" href = "{% url 'category:category_delete' category.id %}">
+                                <span class = "glyphicon glyphicon-trash"></span> {% trans DELETE %}  
+                            </a>
+                        </center>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}
+<!-- end : Content -->

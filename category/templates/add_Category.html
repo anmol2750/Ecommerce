@@ -1,0 +1,30 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load bootstrap4 %}
+{% load i18n %}
+
+<!-- Title -->
+{% block title %} {% trans ADD_CATEGORY %} {% endblock %}
+
+<!-- begin : Content -->
+{% block content %}
+
+    <!-- Heading -->
+    <h4> {% trans ADD_CATEGORY %} </h4>
+  
+    <!-- begin : Form -->
+    <form method="post">
+        {% csrf_token %}
+        <div class = "form-group">
+            <label for = "name"> {% trans CATEGORY_NAME %} </label>
+            <input type = "text" class = "form-control" name = "name" id = "name" placeholder = "Enter Category Name"  aria-describedby="name" required>
+            <small id="name" class="form-text text-secondary"> {% trans CATEGORY_INFO_MESSAGE %} </small>
+            <br>
+            <button class = "btn btn-outline-primary"> {% trans ADD_CATEGORY %} </button>
+            <a class = "btn btn-outline-primary ml-2" href = "{% url 'category:category_list' %}"> {% trans CANCEL %}</a>
+        </div>
+    </form>
+    <!-- end : Form -->
+
+{% endblock %}
+<!-- end : Content -->

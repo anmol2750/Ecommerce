@@ -1,0 +1,36 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+<!-- Title -->
+{% block title %} {% trans ADD_VENDOR %} {% endblock %}
+
+<!-- Content -->
+{% block content %}
+
+<div class = "container">
+  <h3 class = "text-center bg-dark text-white p-2"> {% trans ADD_VENDOR %} </h3>
+  
+  <form method = "post" enctype = "multipart/form-data">
+    {% csrf_token %}
+    <div class = "mt-4">
+      <div> 
+        <h4> {% trans VENDOR_INFORMATION %} </h4> 
+      </div>
+      <div>
+        {% bootstrap_form form %}
+      </div>
+    <div>
+    <button type = "submit" class = "btn btn-outline-primary"> {% trans ADD_VENDOR %} </button>
+    <a href = "{% url 'vendor:vendor_list' %}" class = "btn btn-outline-primary my-2 my-sm-0 ml-2"> {% trans CANCEL %} </a>
+  </form>
+
+  <!-- Javascript used -->
+  <script src = "{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"> </script>
+  <script src = "{% static 'js/countrystatecitydependency.js' %}"> </script>
+  <script src = "{% static 'js/validation.js' %}"> </script> 
+
+</div>
+{% endblock %}

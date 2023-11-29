@@ -1,0 +1,142 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+<!-- Title -->
+{% block title %} {% trans VENDOR %} {% endblock %}
+
+<!-- begin : Content -->
+{% block content %}
+<section class = "content">
+    <div class = "container"> 
+        <div class = "row bg-dark mb-2">
+
+            <!-- Total count of Vendor -->
+            <div class = "d-flex justify-content col-sm-4 ml-4">
+                <h3 class = "btn btn-secondary mt-2">{% trans TOTAL_VENDOR %}{{vendor_count}}<h3> 
+            </div>
+
+             <!-- Vendor Heading at Top -->
+            <div class = "d-flex justify-content-center col mt-2">
+                <h2 class = "text-white"> {% trans VENDOR %} </h2>
+            </div>
+
+            <div class = "d-flex justify-content-left col ml-6">
+                <!-- Active count of Vendor -->
+                <div class = "d-flex ml-5">
+                    <h3 class = "btn btn-secondary mt-2">{% trans ACTIVE_VENDOR %}{{vendor_active_count}}<h3> 
+                </div>
+
+                <!-- Inactive count of Vendor -->
+                <div class = "d-flex ml-5">
+                    <h3 class = "btn btn-secondary mt-2">{% trans INACTIVE_VENDOR %}{{vendor_inactive_count}}<h3> 
+                </div>
+            </div>
+
+        </div>
+        <div class = "row mb-3">
+
+            <div class = "d-flex justify-content-left col">
+                <!-- Add Vendor Button at Top -->
+                <a href = "{% url 'vendor:add_vendor' %}" class = "btn btn-outline-primary my-2 my-sm-0"> {% trans ADD_VENDOR %} </a> 
+
+                <!-- Reset Button at Top -->
+                <a href = "{% url 'vendor:vendor_list' %}" class = "btn btn-outline-primary my-2 my-sm-0 ml-4"> {% trans RESET %} </a>
+            </div>
+
+            <div class = "d-flex justify-content-right col">
+                <!-- Date Filter at Top -->
+                <div class = "d-flex justify-content mr-2">
+                    {% include "main/date_filter.html" %}
+                </div>
+
+                <!-- Search Bar at Top -->
+                <div class = "d-flex justify-content ml-5">
+                    {% include "main/search.html" %}
+                </div>
+            </div>
+
+        </div>
+        <!-- begin : Table -->
+        <div>
+            <table id = "table" class = "table table-sm table-bordered table-hover">
+
+                <!-- Table Headers -->
+                <thead class = "alert-warning">
+                    <tr>
+                        <th scope = "col"><center> {% trans ID %} </th>
+                        <th scope = "col"><center> {% trans DATE_JOINED %} </th>
+                        <th scope = "col"><center> {% trans LOGO %} </th>
+                        <th scope = "col"><center> {% trans USERNAME %} </th>
+                        <th scope = "col"><center> {% trans EMAIL %} </th>
+                        <th scope = "col"><center> {% trans FIRST_NAME %} </th>
+                        <th scope = "col"><center> {% trans LAST_NAME %} </th>
+                        <th scope = "col"><center> {% trans STATUS %} </th>
+                        <th scope = "col"><center> {% trans ACTION %} </th>
+                        <th scope = "col"><center> {% trans EDIT %} </th>
+                        <th scope = "col"><center> {% trans DELETE %} </th>
+                        <th scope = "col"><center> {% trans VIEW %} </th>
+                    </tr>
+                </thead>
+
+                <!-- Table Data -->
+                <tbody>
+                {% for object in object %}
+                <tr>
+                    <td><center>{{object.id}}</td>
+                    <td><center>{{object.date_joined.date}}</td>
+                    <td><center><img class = "img-thumbnail" src = "{{ object.logo_set.first.logo.url }}" alt = "Logo" style = "width : 40px; height : 40px; border-radius : 20px"></td>
+                    <td><center>{{object.username}}</td>
+                    <td><center>{{object.email}}</td>
+                    <td><center>{{object.first_name}}</td>    
+                    <td><center>{{object.last_name}}</td>     
+                    <td><center>
+                        {% if object.is_active %}
+                            <p>{% trans ACTIVE %}</p>
+                        {% else %}
+                            <p>{% trans INACTIVE %}</p>
+                        {% endif %}
+                    </td>
+                    <td><center>
+                        <form method = 'post' action = "{% url 'vendor:action_vendor' %}">
+                            {% csrf_token %}
+                            <input type = "hidden" name = "id_" value = {{object.id}}>
+                            <button type = "submit" name = "action" value = "accept" class = "action-button active-button btn btn-outline-primary btn-sm"><i class="fa-solid fa-circle-check"></i></button>
+                            <button type = "submit" name = "action" value = "reject" class = "action-button reject-button btn btn-outline-primary btn-sm" onclick = "confirmReject('{{object.username}}','reject')"><i class="fa-solid fa-circle-xmark"></i></button>                            
+                        </form>    
+                    </center></td>
+                    <td><center>
+                        <a class = "btn btn-outline-primary btn-sm" href = "{% url 'vendor:update_vendor' object.id %}"><i class="fa-solid fa-user-pen"></i></a>
+                    </td>
+                    <td><center>
+                        <a class = "btn btn-outline-primary btn-sm" href = "#"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                    <td><center>
+                        <a class = "btn btn-link btn-sm" href = "{% url 'vendor:vendor_details' object.id %}"> {% trans VIEW %} </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                
+            </table>
+        </div>
+        <!-- end : Table -->
+
+        <!-- Message when their is no data on searching -->
+        <div id = "no_results_message" style = "display : none; text-align : center; font-size : 30px;"> {% trans NO_RESULT_MESSAGE %} </div>
+
+        <!-- Pagination -->
+        <div>
+            {% include "main/paginator.html" %}
+        </div>
+
+        <script src = "{% static 'js/alertmessage.js' %}" > </script>
+        <script src = "{% static 'js/searching.js' %}" > </script>
+        <script src = "{% static 'script.py' %}" > </script>
+
+    </div>
+</section>
+{% endblock %}
+<!-- end : Content -->

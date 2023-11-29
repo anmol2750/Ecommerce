@@ -1,0 +1,154 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+<!-- Title -->
+{% block title %} {% trans UPDATE_VENDOR %} {% endblock %}
+
+<!-- Content -->
+{% block content %}
+
+<section class = "content">
+  <div class = "container"> 
+
+    <div class = "d-flex justify-content-center bg-dark">
+      <h2 class = "text-white"> {% trans UPDATE_VENDOR %} </h2>
+    </div>
+
+    <div>  
+      <div  class = "mt-4"> 
+        <form method = "POST" enctype = "multipart/form-data"> 
+          {% csrf_token %}
+
+          <!-- Vendor's Personal Information -->
+          <div>     
+
+            <div>
+              <h4><u> {% trans PERSONAL_INFORMATION %} </u></h4>
+            </div>
+            <br>
+
+            <div class = "form-group row">
+              <label for = "logo" class = "col-sm-2 col-form-label"> {% trans LOGO %} </label>
+              <div class = "col-sm-10">
+                {% if logo.logo %}
+                  <img class = "ml-5 img-thumbnail" src = "{{ logo.logo.url }}" style = "width : 100px; height : 100px; border-radius : 10px" alt = "" >
+                {% else %}
+                  <img class = "ml-5 img-thumbnail" src = "{% static 'images/vendor_logo/default.png' %}" style = "width : 100px; height : 100px; border-radius : 10px" alt = "" > 
+                {% endif %}
+                <br>
+                <input type = "file" class = "form-control mt-3" id = 'logo' name = "logo" value = "{{logo.logo}}">
+              </div> 
+            </div>  
+
+            <div class = "form-group row">
+              <label for = "username" class = "col-sm-2 col-form-label"> {% trans USERNAME %} </label>
+              <div class = "col-sm-10">
+                <input type = "text" class = "form-control" id = "username" name = "username" value = "{{address.user.username}}">
+              </div>
+            </div>
+
+            <div class = "form-group row">
+              <label for = "email" class = "col-sm-2 col-form-label"> {% trans EMAIL %} </label>
+              <div class = "col-sm-10">
+                <input type = "text" class = "form-control" id = "email" name = "email" value = "{{address.user.email}}">
+              </div>
+            </div>
+
+            <div class = "form-group row">
+              <div class = "form-group col-md-6">
+                <label for = "firstname" class = "col-form-label"> {% trans FIRST_NAME %} </label>
+                <input type = "text" class = "form-control" id = "firstname" name = "firstname" value = "{{address.user.first_name}}">
+              </div>
+              <div class = "form-group col-md-6">
+                <label for = "lastname" class = "col-form-label"> {% trans LAST_NAME %} </label>
+                <input type = "text" class = "form-control" id = "lastname" name = "lastname" value = "{{address.user.last_name}}">
+              </div>
+            </div>  
+          </div> 
+
+          <!-- Vendor's Address Information -->
+          <div>
+
+            <div>
+              <h4><u> {% trans ADDRESS_INFORMATION %} </u></h4>
+            </div>
+            <br>
+
+            <div class = "form-group row">
+              <label for = "addressline1" class = "col-sm-2 col-form-label"> {% trans ADDRESS_LINE_1 %} </label>
+              <div class = "col-sm-10">
+                <input type = "text" class = "form-control" id = "addressline1" name = "addressline1" value = "{{address.address_line_1}}">
+              </div>
+            </div>
+
+            <div class = "form-group row">
+              <label for = "addressline2" class = "col-sm-2 col-form-label"> {% trans ADDRESS_LINE_2 %} </label>
+              <div class = "col-sm-10">
+                <input type = "text" class = "form-control" id = "addressline2" name = "addressline2" value = "{{address.address_line_2}}">
+              </div>
+            </div>
+
+            <div class = "form-group row">
+              <div class = "form-group col-md-6">
+                <label for = "country" class = "col-form-label"> {% trans COUNTRY %} </label>
+                <select class = "form-control" id = "country" name = "country">
+                  <option value = "{{address.country_id}}"> {{address.country.name}} </option>
+                  {% for country in countries %}
+                    <option value = "{{country.id}}"> {{country.name}} </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class = "form-group col-md-6">
+                <label for = "state" class = "col-form-label"> {% trans STATE %} </label>
+                <select class = "form-control" id = "state" name = "state">
+                  <option value = "{{address.state_id}}"> {{address.state.name}}</option>
+                  {% for state in  states %}
+                    <option value = "{{state.id}}"> {{state.name}} </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class = "form-group row">
+              <div class = "form-group col-md-6">
+                <label for = "city" class = "col-form-label"> {% trans CITY %} </label>
+                <select class = "form-control" id = "city" name = "city">
+                  <option value = "{{address.city_id}}"> {{address.city.name}} </option>
+                  {% for city in cities %}
+                    <option value = "{{city.id}}"> {{city.name}} </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class = "form-group col-md-6">
+                <label for = "addresstype" class = "col-form-label"> {% trans ADDRESS_TYPE %} </label>
+                <input type = "text" class = "form-control" id = "addresstype" name = "addresstype" value = "{{address.address_type}}">
+              </div>
+            </div>  
+            
+            <div class = "form-group row">
+              <label for = "pincode" class = "col-sm-2 col-form-label"> {% trans PINCODE %} </label>
+              <div class = "col-sm-10">
+                <input type = "text" class = "form-control" id = "pincode" name = "pincode" value = "{{address.pincode}}">
+              </div>
+            </div>  
+          </div>
+
+          <!-- Update and Cancel Button -->
+          <div>
+            <button type="submit" class="btn btn-outline-primary mr-2"> {% trans UPDATE_VENDOR %} </button>
+            <a href = "{% url 'vendor:vendor_list' %}" class = "btn btn-outline-primary my-2 my-sm-0"> {% trans CANCEL %} </a>
+          </div> 
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Javascript used -->
+<script src = "{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
+<script src = "{% static 'js/countrystatecitydependency.js' %}"></script>
+<script src = "{% static 'js/validation.js' %}"> </script> 
+{% endblock %}
