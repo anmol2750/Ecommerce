@@ -1,0 +1,38 @@
+{% load bootstrap4 %}
+{% load i18n %}
+
+
+<div class = "dropdown">
+    <button class = "btn btn-outline-primary dropdown-toggle" type = "button" id = "dropdownMenuButton" data-toggle = "dropdown" aria-haspopup = "true" aria-expanded = "false">
+        Date Filter
+    </button>
+    <div class = "dropdown-menu" aria-labelledby = "dropdownMenuButton">
+    <form method = "POST">
+        {% csrf_token %}
+        <div class = "mr-2 ml-2">
+            <label for = "datestart"> From: </label>
+                <div class = "input-group">
+                    <div class = "input-group-prepend">
+                        <span class = "input-group-text">
+                        <i class = "bi bi-calendar"></i>
+                    </span>
+                </div>
+                <input type = "date" class = "form-control" name = "startdate" id = "datestart"/>
+            </div>
+        </div>
+        <br/>
+        <div class = "mr-2 ml-2">
+            <label for = "dateend"> To: </label>
+                <div class = "input-group">
+                    <div class = "input-group-prepend">
+                        <span class = "input-group-text">
+                        <i class = "bi bi-calendar"></i>
+                    </span>
+                </div>
+                <input type = "date" class = "form-control" name = "enddate" id = "dateend"/>
+            </div>
+        </div>
+        <button type = "submit" class = "btn ml-5 btn-primary mt-5 ml-13"> Apply </button>
+    </form>
+    </div>
+</div>
